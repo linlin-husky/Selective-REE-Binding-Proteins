@@ -1,9 +1,7 @@
 """Tests for the ProteinData and ProteinDataset Pydantic schemas."""
 from __future__ import annotations
-
 import pytest
 from pydantic import ValidationError
-
 from agentic_ai.schemas import ProteinData, ProteinDataset
 
 # A realistic Lanmodulin-style fragment using only valid amino acid letters
