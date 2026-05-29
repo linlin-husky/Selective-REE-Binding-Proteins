@@ -51,19 +51,20 @@ git. They are downloadable from the cited publications.
 ## Project Structure
 
 
-- agentic_ai/                  # Main package
-- ├── agents/                  # CrewAI agent definitions
-- ├── inputs/                  # Source corpus
-- │   └── processed/           # Gemini-curated text extracts  
-- ├── schemas.py               # Pydantic data models
-- ├── main.py                  # Entry point
-- └── utils/                   # Helpers (env, extraction,  loaders)
-- data/
-- ├── raw/supplementary/       # Author-published datasets (NOT in git)
-- └── processed/               # Cleaned ML-ready CSVs (committed)
-- models/                      # Trained .pkl files (committed)
-- notebooks/                   # EDA + training experiments
-- tests/                       # pytest suite (branch coverage)
+- agentic_ai/
+- ├── main.py                       # Unified entry point (Block 3.4)
+- ├── schemas.py                    # Path C two-tier schema (Block 3.1)
+- ├── loaders/
+- │   ├── __init__.py
+- │   ├── xlsx_loader.py           # MOESM3 → 9,240 records (Block 3.2)
+- │   └── text_reader.py           # 15 curated papers (Block 3.3)
+- ├── inputs/
+- │   └── processed/                # 15 .txt files 
+- └── utils/
+-     └── env_check.py              # Block 1
+- data/raw/supplementary/
+- └── 41589_2026_2176_MOESM3_ESM.xlsx   # Diep et al. 2026 master dataset
+- tests/                            # 34 passing tests
 
 ## Setup
 
@@ -88,7 +89,7 @@ To reproduce the full pipeline you need the supplementary data:
 
 - [x] Week 1 Block 1 — Environment, API connectivity, project scaffold
 - [x] Week 1 Block 2 — Pydantic schema + LLM extraction proof-of-concept
-- [ ] Week 1 Block 3 — XLSX loader (MOESM3) + text reader + Path C two-tier schema
+- [x] Week 1 Block 3 — XLSX loader (MOESM3) + text reader + Path two-tier schema
 - [ ] Week 1 Block 4 — CrewAI agent for literature annotation enrichment
 - [ ] Week 1 Block 5 — DataFrame assembly + validation
 - [ ] Week 2 — Sequence feature engineering (Biopython)
