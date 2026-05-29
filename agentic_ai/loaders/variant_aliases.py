@@ -27,6 +27,26 @@ from typing import Optional
 # are typos to be corrected.
 _KNOWN_ORGANISM_PREFIXES = {"mex", "hans", "melba"}
 
+# ---------------------------------------------------------------------------
+# TIER 1: Canonical aliases for wild-type orthologs with MOESM3 IDs
+# ---------------------------------------------------------------------------
+# Maps the common literature names of wild-type LanM orthologs to their
+# MOESM3 row index. These are the high-value joins: every literature
+# measurement of one of these proteins gets paired with the full
+# 15-element selectivity profile from Diep et al. 2026.
+#
+# Confidence: HIGH. Each alias is stated explicitly in Diep et al. 2026
+# (the paper that defined the o-N indexing system).
+#
+# To add a new alias, verify against MOESM3 and cite the source paper
+# in a comment so the rationale is visible at the call site.
+_CANONICAL_ALIASES = {
+    "Mex-LanM":   "o-621",   # M. extorquens LanM (Cotruvo 2018, Diep 2026)
+    "WT-LanM":    "o-621",   # 'Wild-type LanM' in Elsevier MD paper = Mex-LanM
+    "Hans-LanM":  "o-180",   # H. quercus LanM (Mattocks 2023, Diep 2026)
+    "Melba-LanM": "o-36",    # M. sp. 13MFTsu3.1M2 LanM (named in Diep 2026)
+}
+
 # Bare mutation codes that appear without their parent name in some
 # papers. Map them to the canonical <parent>(<mutation>) form.
 # Currently just R100K (the Mattocks 2023 Hans-LanM monomeric variant);
@@ -156,3 +176,22 @@ def _capitalize_organism_prefix(text: str) -> str:
         return f"{prefix.capitalize()}-{rest}"
 
     return text
+
+def resolve_to_canonical_id(raw: str = None) -> Optional[str]:
+    """
+    Normalizes a raw variant identifier and then resolves it to its
+    canonical MOESM3 ortholog ID if a known alias exists.
+    This is the integration point between Tier 1 alias resolution and
+    the rest of the pipeline. Block 5 will use this to join literature
+    measurements to MOESM3 records.
+    @param raw: A variant identifier as it appears in source text.
+    return : The canonical ID (e.g. 'o-621'), or the normalized form
+             when no alias is known, or None when the input is
+             unusable. Callers should treat 'o-N' format identifiers
+             as MOESM3-joinable and everything else as standalone.
+    """
+    normalized = normalize_variant_name(raw)
+    if normalized is None:
+        return None
+
+    return _CANONICAL_ALIASES.get(normalized, normalized)

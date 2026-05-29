@@ -182,3 +182,82 @@ def test_normalize_combines_tag_strip_with_capitalization():
     """
     assert normalize_variant_name("mex-LanM-Cys") == "Mex-LanM"
 
+# ---------------------------------------------------------------------------
+# TIER 1: alias resolution
+# ---------------------------------------------------------------------------
+
+from agentic_ai.loaders.variant_aliases import resolve_to_canonical_id
+
+
+@pytest.mark.parametrize("raw,expected", [
+    ("Mex-LanM",   "o-621"),
+    ("mex-LanM",   "o-621"),   # capitalization typo, normalizer fixes first
+    ("WT-LanM",    "o-621"),
+    ("WT LanM",    "o-621"),   # whitespace typo, normalizer fixes first
+    ("Hans-LanM",  "o-180"),
+    ("hans-LanM",  "o-180"),
+    ("Melba-LanM", "o-36"),
+    ("melba-LanM", "o-36"),
+])
+def test_resolve_canonical_aliases_to_moesm3_ids(raw, expected):
+    """
+    Verifies that the four wild-type orthologs with known MOESM3
+    indices resolve correctly through both normalization and alias
+    lookup. These are the high-value joins powering the Block 5 merge.
+    """
+    assert resolve_to_canonical_id(raw) == expected
+
+
+@pytest.mark.parametrize("raw", [
+    "o-36", "o-127", "o-412", "o-543", "o-585", "o-621",
+])
+def test_resolve_passes_through_native_ortholog_ids(raw):
+    """
+    Verifies that 'o-N' identifiers already in MOESM3 form pass through
+    the resolver unchanged. These are the variants the agent extracted
+    using the same notation MOESM3 uses, so no aliasing is needed.
+    """
+    assert resolve_to_canonical_id(raw) == raw
+
+
+def test_resolve_returns_normalized_form_for_unknown_aliases():
+    """
+    Verifies that variants without a known canonical alias get the
+    normalized form returned, not None. The Block 5 merge will treat
+    these as standalone records (no MOESM3 join, but the record is
+    kept).
+    """
+    assert resolve_to_canonical_id("4D9H") == "4D9H"
+    assert resolve_to_canonical_id("LanTERN") == "LanTERN"
+    assert resolve_to_canonical_id("MIF") == "MIF"
+
+
+def test_resolve_returns_none_for_empty_input():
+    """
+    Verifies that empty input flows through both the normalizer and
+    the alias step, yielding None at the end.
+    """
+    assert resolve_to_canonical_id(None) is None
+    assert resolve_to_canonical_id("") is None
+    assert resolve_to_canonical_id("   ") is None
+
+
+def test_resolve_chains_tag_strip_with_alias_lookup():
+    """
+    Verifies that a tagged variant gets the tag stripped by the
+    normalizer AND then resolved through the alias map. This is the
+    end-to-end test for the most surface-variation-heavy input shape.
+    """
+    assert resolve_to_canonical_id("mex-LanM-Cys") == "o-621"
+    assert resolve_to_canonical_id("Hans-LanM-SpyTag3") == "o-180"
+
+
+def test_resolve_handles_bare_mutation_through_alias_chain():
+    """
+    Verifies that bare 'R100K' gets parented to 'Hans-LanM(R100K)' by
+    the normalizer, then resolves through alias lookup (returning the
+    normalized form since R100K is a mutant, not a wild-type ortholog
+    in MOESM3).
+    """
+    assert resolve_to_canonical_id("R100K") == "Hans-LanM(R100K)"
+    
