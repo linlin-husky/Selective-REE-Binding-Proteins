@@ -376,3 +376,166 @@ def test_classify_does_not_short_circuit_normalization_responsibility():
     """
     assert classify_construct("mex-lanm") is None
     assert classify_construct("Mex-LanM-Cys") is None
+
+# ---------------------------------------------------------------------------
+# TIER 3: drop rules
+# ---------------------------------------------------------------------------
+
+from agentic_ai.loaders.variant_aliases import enrich_variant, should_drop
+
+
+@pytest.mark.parametrize("name", ["LanM", "WT", "EF1", "EF2", "EF3", "EF4"])
+def test_should_drop_returns_true_for_dropped_names(name):
+    """
+    Verifies that every name in the drop list is correctly flagged.
+    These are agent extraction failure modes (generic names, motif
+    names mistaken for variants) and must not appear in the dataset.
+    """
+    assert should_drop(name) is True
+
+
+@pytest.mark.parametrize("name", [
+    "Mex-LanM", "Hans-LanM", "o-621", "4D9H", "LanTERN", "MIF",
+])
+def test_should_drop_returns_false_for_real_variants(name):
+    """
+    Verifies that legitimate variant names are NOT in the drop list.
+    """
+    assert should_drop(name) is False
+
+
+def test_should_drop_returns_false_for_none():
+    """
+    Verifies that None input returns False rather than raising. None
+    means 'no normalized form'; that's the normalizer's domain to
+    handle, not the drop list's.
+    """
+    assert should_drop(None) is False
+
+
+# ---------------------------------------------------------------------------
+# End-to-end: enrich_variant
+# ---------------------------------------------------------------------------
+
+def test_enrich_canonical_alias_returns_moesm3_id_and_ortholog_metadata():
+    """
+    Verifies end-to-end enrichment of a wild-type ortholog literature
+    name. The canonical_id resolves to the MOESM3 index and the
+    construct metadata is filled in.
+    """
+    result = enrich_variant("Mex-LanM")
+
+    assert result == {
+        "canonical_id": "o-621",
+        "construct_type": "ortholog",
+        "parent_scaffold": "Lanmodulin",
+    }
+
+
+def test_enrich_lowercase_alias_with_tag_resolves_correctly():
+    """
+    Verifies end-to-end enrichment composes normalization, alias
+    resolution, and construct classification: the tagged lowercase
+    'hans-LanM-Cys' resolves to o-180 with ortholog metadata.
+    """
+    result = enrich_variant("hans-LanM-Cys")
+
+    assert result["canonical_id"] == "o-180"
+    assert result["construct_type"] == "ortholog"
+    assert result["parent_scaffold"] == "Lanmodulin"
+
+
+def test_enrich_point_mutant_preserves_mutant_classification():
+    """
+    Verifies that point mutants get their construct_type set correctly
+    rather than inheriting 'ortholog' from the MOESM3 default branch.
+    """
+    result = enrich_variant("4D9H")
+
+    assert result["canonical_id"] == "4D9H"
+    assert result["construct_type"] == "point_mutant"
+    assert result["parent_scaffold"] == "Lanmodulin"
+
+
+def test_enrich_mif_preserves_lanpepsy_distinction():
+    """
+    Verifies that the MIF/lanpepsy architectural finding survives
+    end-to-end enrichment. This is the key Block 4.4 result for the
+    Week 3 ML model.
+    """
+    result = enrich_variant("MIF")
+
+    assert result["canonical_id"] == "MIF"
+    assert result["construct_type"] == "ortholog"
+    assert result["parent_scaffold"] == "lanpepsy"
+
+
+def test_enrich_fusion_sensor_gets_correct_scaffold():
+    """
+    Verifies that fusion sensors are tagged with Lanmodulin+GFP scaffold.
+    """
+    result = enrich_variant("LanTERN")
+
+    assert result["construct_type"] == "fusion_sensor"
+    assert result["parent_scaffold"] == "Lanmodulin+GFP"
+
+
+def test_enrich_native_moesm3_id_passes_through_with_defaults():
+    """
+    Verifies that MOESM3-native ortholog IDs (already canonical) get
+    enriched with ortholog/Lanmodulin defaults since they're not in
+    the explicit classification map.
+    """
+    result = enrich_variant("o-127")
+
+    assert result == {
+        "canonical_id": "o-127",
+        "construct_type": "ortholog",
+        "parent_scaffold": "Lanmodulin",
+    }
+
+
+@pytest.mark.parametrize("name", ["LanM", "WT", "EF1", "EF2", "EF3", "EF4"])
+def test_enrich_returns_none_for_dropped_names(name):
+    """
+    Verifies that every name in the drop list produces None from
+    enrich_variant, signaling the caller to skip the record entirely.
+    """
+    assert enrich_variant(name) is None
+
+
+@pytest.mark.parametrize("raw", [None, "", "   "])
+def test_enrich_returns_none_for_empty_input(raw):
+    """
+    Verifies that empty input flows through cleanly as None.
+    """
+    assert enrich_variant(raw) is None
+
+
+def test_enrich_unknown_variant_returns_unknown_metadata():
+    """
+    Verifies that a never-before-seen variant name gets construct_type
+    'unknown' and parent_scaffold None, keeping it in the dataset for
+    review rather than silently classifying it as something specific.
+    """
+    result = enrich_variant("NeverSeenProtein-XYZ")
+
+    assert result == {
+        "canonical_id": "NeverSeenProtein-XYZ",
+        "construct_type": "unknown",
+        "parent_scaffold": None,
+    }
+
+
+def test_enrich_bare_r100k_chains_to_full_lanm_mutant():
+    """
+    Verifies the full chain: 'R100K' normalizes to 'Hans-LanM(R100K)',
+    classifies as a point mutant of Lanmodulin, with no MOESM3 join.
+    This tests every layer of the pipeline composing correctly.
+    """
+    result = enrich_variant("R100K")
+
+    assert result["canonical_id"] == "Hans-LanM(R100K)"
+    assert result["construct_type"] == "point_mutant"
+    assert result["parent_scaffold"] == "Lanmodulin"
+        

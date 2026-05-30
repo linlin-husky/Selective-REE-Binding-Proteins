@@ -126,7 +126,26 @@ _CONSTRUCT_CLASSIFICATIONS = {
     "wild-type S. oneidensis":  ("ortholog",  "non_LanM_protein"),
     "CDS J19_31570":            ("ortholog",  "unknown"),
 }
-
+# ---------------------------------------------------------------------------
+# TIER 3: Drop rules — names too ambiguous to retain
+# ---------------------------------------------------------------------------
+# The agent occasionally extracts names that are not specific proteins,
+# either because the source paper uses generic shorthand or because the
+# agent confused a sub-protein motif name for a variant. Records with
+# these names are dropped from the enriched dataset entirely.
+#
+# Confidence: HIGH. Each name is a known agent failure mode caught in
+# the Block 4.3 corpus run. Adding new entries should be conservative —
+# anything that COULD be a real protein under some interpretation
+# stays.
+_DROP_RULES = {
+    "LanM",   # Generic name with no specific organism — could be any LanM
+    "WT",     # Bare 'wild-type' — context-dependent, no parent named
+    "EF1",    # EF-hand motif (positions 1-4 within a LanM), not a protein
+    "EF2",    # (same)
+    "EF3",    # (same)
+    "EF4",    # (same)
+}
 # Bare mutation codes that appear without their parent name in some
 # papers. Map them to the canonical <parent>(<mutation>) form.
 # Currently just R100K (the Mattocks 2023 Hans-LanM monomeric variant);
@@ -296,3 +315,63 @@ def classify_construct(
         return None
 
     return _CONSTRUCT_CLASSIFICATIONS.get(canonical_name)
+
+def should_drop(canonical_name: str = None) -> bool:
+    """
+    Returns True if the canonical name is in the drop list and should
+    not appear in the enriched dataset. Caller passes the already-
+    normalized form.
+    @param canonical_name: A normalized variant identifier, or None.
+    return : True if the name should be dropped; False otherwise
+             (including for None and unknown names — these are not the
+             drop list's responsibility).
+    """
+    if canonical_name is None:
+        return False
+
+    return canonical_name in _DROP_RULES
+
+
+def enrich_variant(
+    raw_name: str = None,
+) -> Optional[dict]:
+    """
+    End-to-end variant enrichment: takes a raw variant identifier from
+    a literature extraction and returns its full canonical metadata, or
+    None if the variant should be dropped.
+    This is the integration point Block 4.4c will use to populate the
+    construct_type, parent_scaffold, and (where applicable) MOESM3
+    join-key fields on persisted PaperExtraction records.
+    @param raw_name: A variant identifier as it appears in source text.
+    return : Either a dict with keys:
+               - 'canonical_id': str (possibly an 'o-N' MOESM3 index)
+               - 'construct_type': str
+               - 'parent_scaffold': Optional[str]
+             or None if the variant should be dropped or is unparseable.
+    """
+    normalized = normalize_variant_name(raw_name)
+    if normalized is None:
+        return None
+
+    if should_drop(normalized):
+        return None
+
+    canonical_id = _CANONICAL_ALIASES.get(normalized, normalized)
+
+    classification = _CONSTRUCT_CLASSIFICATIONS.get(normalized)
+    if classification is not None:
+        construct_type, parent_scaffold = classification
+    elif canonical_id.startswith("o-"):
+        # MOESM3-native or aliased to MOESM3: assume ortholog/Lanmodulin
+        construct_type = "ortholog"
+        parent_scaffold = "Lanmodulin"
+    else:
+        # Unknown variant outside both the classification map and MOESM3
+        construct_type = "unknown"
+        parent_scaffold = None
+
+    return {
+        "canonical_id": canonical_id,
+        "construct_type": construct_type,
+        "parent_scaffold": parent_scaffold,
+    }
