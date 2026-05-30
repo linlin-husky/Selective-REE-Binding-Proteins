@@ -86,3 +86,108 @@ def _validate_sequence_characters(sequence: str) -> None:
             f"{sorted(invalid)}. Only the 20 standard amino acids "
             f"(ACDEFGHIKLMNPQRSTVWY) are accepted."
         )
+# ---------------------------------------------------------------------------
+# Block 2.2b: Per-motif and aggregate features
+# ---------------------------------------------------------------------------
+
+# Positions within the 6-residue regex match that vary across the 616
+# MOESM3 orthologs. Positions 1, 3, 4 (D, D, G) are essentially invariant
+# and provide no ML signal, so we exclude them. Position numbering is
+# regex-relative, not classical EF-hand loop numbering:
+#
+#     P D K D G T
+#     0 1 2 3 4 5
+#
+# Encoded positions: 0, 2, 5
+# Classical-literature positions: 1, 3, 6 (each +1 from regex indexing)
+_VARIABLE_MOTIF_POSITIONS = (0, 2, 5)
+
+# Lanmodulin's defining architecture is 4 EF-hand motifs. We pin the
+# feature schema to exactly 4 motifs, padding with None when a sequence
+# has fewer and ignoring extras when a sequence has more.
+_CANONICAL_EF_HAND_COUNT = 4
+
+
+def compute_ef_hand_features(sequence: str = None) -> dict:
+    """
+    Computes 17 EF-hand-related features from a protein sequence:
+      - 12 per-motif categorical features (3 positions x 4 motifs)
+      - 4 aggregate architectural features
+      - 1 binary canonical-architecture indicator
+    Per-motif features are populated for the first 4 motifs found.
+    Sequences with fewer than 4 motifs have None for the missing
+    motif positions; pandas will convert these to NaN on DataFrame
+    construction and tree models handle NaN natively at split time.
+    @param sequence: A protein amino acid sequence. Tolerates lowercase
+                     and outer whitespace; rejects non-standard amino
+                     acid characters.
+    return : Dict of 17 features. Categorical features (per-motif
+             positions) are single-character strings or None.
+             Numerical features (count, spacing, span_fraction) are
+             ints or floats, or None when undefined.
+    """
+    motifs = find_ef_hand_motifs(sequence)
+
+    features = {}
+
+    # Per-motif categorical features. We always emit 12 keys regardless
+    # of how many motifs were found, padding with None for missing motifs.
+    for ef_index in range(_CANONICAL_EF_HAND_COUNT):
+        ef_number = ef_index + 1  # 1-indexed in feature names for clarity
+        motif_string = (
+            motifs[ef_index].motif if ef_index < len(motifs) else None
+        )
+        for position in _VARIABLE_MOTIF_POSITIONS:
+            feature_name = f"ef{ef_number}_motif_pos{position}"
+            features[feature_name] = (
+                motif_string[position] if motif_string else None
+            )
+
+    # Aggregate architectural features
+    features.update(_compute_aggregate_features(motifs, sequence))
+
+    return features
+
+
+def _compute_aggregate_features(motifs: list, sequence: str = None) -> dict:
+    """
+    Computes the 5 aggregate features describing overall EF-hand
+    architecture for a sequence.
+    @param motifs: List of EFHandMotif tuples (output of
+                   find_ef_hand_motifs).
+    @param sequence: The original sequence; used only for span_fraction.
+    return : Dict of 5 aggregate features. Spacing-related features
+             are None when fewer than 2 motifs are found.
+    """
+    count = len(motifs)
+    seq_length = len(sequence.strip()) if sequence else 0
+
+    if count < 2:
+        return {
+            "ef_hand_count":          count,
+            "ef_hand_mean_spacing":   None,
+            "ef_hand_spacing_stdev":  None,
+            "ef_hand_span_fraction":  None,
+            "has_four_ef_hands":      int(count == _CANONICAL_EF_HAND_COUNT),
+        }
+
+    positions = [m.start_index for m in motifs]
+    spacings = [positions[i+1] - positions[i] for i in range(len(positions)-1)]
+
+    mean_spacing = sum(spacings) / len(spacings)
+
+    # Population standard deviation (we have the full set of spacings
+    # for this sequence, not a sample of them).
+    variance = sum((s - mean_spacing) ** 2 for s in spacings) / len(spacings)
+    stdev = variance ** 0.5
+
+    span = positions[-1] - positions[0]
+    span_fraction = span / seq_length if seq_length else None
+
+    return {
+        "ef_hand_count":          count,
+        "ef_hand_mean_spacing":   mean_spacing,
+        "ef_hand_spacing_stdev":  stdev,
+        "ef_hand_span_fraction":  span_fraction,
+        "has_four_ef_hands":      int(count == _CANONICAL_EF_HAND_COUNT),
+    }
