@@ -10,6 +10,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "engineered_chelator",
+      "parent_scaffold": "unknown",
+      "notes": null,
       "source_paper": "biorxiv_2025_10_19_682977"
     },
     {
@@ -24,6 +27,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "engineered_chelator",
+      "parent_scaffold": "unknown",
+      "notes": null,
       "source_paper": "biorxiv_2025_10_19_682977"
     },
     {
@@ -36,6 +42,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "engineered_chelator",
+      "parent_scaffold": "unknown",
+      "notes": null,
       "source_paper": "biorxiv_2025_10_19_682977"
     },
     {
@@ -48,6 +57,24 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "engineered_chelator",
+      "parent_scaffold": "unknown",
+      "notes": null,
+      "source_paper": "biorxiv_2025_10_19_682977"
+    },
+    {
+      "variant_id": "LBT",
+      "source_organism": "(auto-created from measurement)",
+      "sequence": null,
+      "parent_variant_id": null,
+      "mutations": [],
+      "mutation_notation": null,
+      "taxonomy": null,
+      "ef_hand_count": null,
+      "selectivity_cluster": null,
+      "construct_type": "engineered_chelator",
+      "parent_scaffold": "de_novo",
+      "notes": "Auto-created during Block 4.4c enrichment from an orphan measurement whose variant record was missing in the agent extraction.",
       "source_paper": "biorxiv_2025_10_19_682977"
     }
   ],

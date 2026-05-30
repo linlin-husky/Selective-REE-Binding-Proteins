@@ -43,6 +43,8 @@ _KNOWN_ORGANISM_PREFIXES = {"mex", "hans", "melba"}
 _CANONICAL_ALIASES = {
     "Mex-LanM":   "o-621",   # M. extorquens LanM (Cotruvo 2018, Diep 2026)
     "WT-LanM":    "o-621",   # 'Wild-type LanM' in Elsevier MD paper = Mex-LanM
+    "WT":         "o-621",   # Bare 'WT' resolves to Mex-LanM based on its
+                             # canonical Ca2+ Kd (710 µM, nihms-1790336)
     "Hans-LanM":  "o-180",   # H. quercus LanM (Mattocks 2023, Diep 2026)
     "Melba-LanM": "o-36",    # M. sp. 13MFTsu3.1M2 LanM (named in Diep 2026)
 }
@@ -119,7 +121,27 @@ _CONSTRUCT_CLASSIFICATIONS = {
     # and chromatographic use, not in the protein scaffold itself.
     # -----------------------------------------------------------------
     "MIF":       ("ortholog",  "lanpepsy"),
-
+# -----------------------------------------------------------------
+    # Isolated EF-hand peptides — synthetic constructs containing the
+    # 12-residue LanM EF-hand loop sequence in isolation. Gutenthaler
+    # 2022 (Inorganic Chemistry Frontiers) measured each EF's REE
+    # binding stripped from the structural corset; biorxiv_2025.12.14
+    # uses similar peptides as Gd contrast agents (relaxivity data).
+    # The micromolar Kds and L/(s·mmol) relaxivities are real and
+    # scientifically valuable distinctions from the picomolar Kd of
+    # the full LanM scaffold.
+    # -----------------------------------------------------------------
+    "EF1":  ("engineered_chelator",  "Lanmodulin"),
+    "EF2":  ("engineered_chelator",  "Lanmodulin"),
+    "EF3":  ("engineered_chelator",  "Lanmodulin"),
+    "EF4":  ("engineered_chelator",  "Lanmodulin"),
+# -----------------------------------------------------------------
+    # Lanthanide Binding Tag — de novo designed peptide (Imperiali lab)
+    # ~20 residues with a tryptophan antenna for Tb-luminescence.
+    # Surface-displayed on E. coli/Caulobacter in some biorxiv papers.
+    # NOT derived from any natural protein; classified as de_novo.
+    # -----------------------------------------------------------------
+    "LBT":  ("engineered_chelator",  "de_novo"),
     # -----------------------------------------------------------------
     # Non-Lanmodulin or unconfirmed orthologs
     # -----------------------------------------------------------------
@@ -139,12 +161,15 @@ _CONSTRUCT_CLASSIFICATIONS = {
 # anything that COULD be a real protein under some interpretation
 # stays.
 _DROP_RULES = {
-    "LanM",   # Generic name with no specific organism — could be any LanM
-    "WT",     # Bare 'wild-type' — context-dependent, no parent named
-    "EF1",    # EF-hand motif (positions 1-4 within a LanM), not a protein
-    "EF2",    # (same)
-    "EF3",    # (same)
-    "EF4",    # (same)
+    "LanM",   # Generic name with no specific organism — could be any LanM,
+              # and the one measurement attached (5.0 unitless Dy) is too
+              # ambiguous to retain
+    # NOTE: 'EF1'/'EF2'/'EF3'/'EF4' were previously in this list but
+    # were promoted to Tier 2 classification when downstream inspection
+    # showed they carry real Kd / relaxivity data for isolated synthetic
+    # EF-hand peptides (Gutenthaler 2022 et al.).
+    # 'WT' was promoted to a Tier 1 alias (-> 'o-621') after inspection
+    # showed the single 'WT' measurement is Mex-LanM's canonical Ca2+ Kd.
 }
 # Bare mutation codes that appear without their parent name in some
 # papers. Map them to the canonical <parent>(<mutation>) form.

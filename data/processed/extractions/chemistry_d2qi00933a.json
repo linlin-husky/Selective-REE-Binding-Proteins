@@ -10,6 +10,9 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "engineered_chelator",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "chemistry_d2qi00933a"
     },
     {
@@ -22,6 +25,9 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "engineered_chelator",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "chemistry_d2qi00933a"
     },
     {
@@ -34,6 +40,9 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "engineered_chelator",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "chemistry_d2qi00933a"
     },
     {
@@ -46,6 +55,9 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "engineered_chelator",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "chemistry_d2qi00933a"
     }
   ],

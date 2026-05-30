@@ -12,10 +12,13 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "point_mutant",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "chemical_society_au4c00628"
     },
     {
-      "variant_id": "Hans-LanM",
+      "variant_id": "o-180",
       "source_organism": "Hansschlegelia quercus",
       "sequence": null,
       "parent_variant_id": null,
@@ -24,6 +27,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "chemical_society_au4c00628"
     }
   ],

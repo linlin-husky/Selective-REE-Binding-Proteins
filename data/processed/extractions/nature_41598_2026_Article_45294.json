@@ -1,7 +1,7 @@
 {
   "variants": [
     {
-      "variant_id": "Mex-LanM",
+      "variant_id": "o-621",
       "source_organism": "Methylorubrum extorquens",
       "sequence": null,
       "parent_variant_id": null,
@@ -10,6 +10,9 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_41598_2026_Article_45294"
     },
     {
@@ -22,6 +25,9 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "unknown",
+      "notes": null,
       "source_paper": "nature_41598_2026_Article_45294"
     }
   ],

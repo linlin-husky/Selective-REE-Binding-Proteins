@@ -314,6 +314,15 @@ def test_classify_calmodulin_chelator_as_distinct_scaffold():
     """
     assert classify_construct("CaBM") == ("engineered_chelator", "Calmodulin")
 
+def test_classify_lbt_as_de_novo_engineered_chelator():
+    """
+    Verifies that Lanthanide Binding Tag (LBT) is classified as an
+    engineered chelator with parent_scaffold 'de_novo'. LBT is the
+    Imperiali-lab designed ~20-residue peptide, not derived from any
+    natural protein; using 'Lanmodulin' or any other natural scaffold
+    would be a misclassification.
+    """
+    assert classify_construct("LBT") == ("engineered_chelator", "de_novo")
 
 @pytest.mark.parametrize("variant_id", ["RF1", "RF2", "RF2 6AW", "RF3"])
 def test_classify_rf_series_with_unknown_scaffold(variant_id):
@@ -384,7 +393,7 @@ def test_classify_does_not_short_circuit_normalization_responsibility():
 from agentic_ai.loaders.variant_aliases import enrich_variant, should_drop
 
 
-@pytest.mark.parametrize("name", ["LanM", "WT", "EF1", "EF2", "EF3", "EF4"])
+@pytest.mark.parametrize("name", ["LanM"])
 def test_should_drop_returns_true_for_dropped_names(name):
     """
     Verifies that every name in the drop list is correctly flagged.
@@ -495,7 +504,7 @@ def test_enrich_native_moesm3_id_passes_through_with_defaults():
     }
 
 
-@pytest.mark.parametrize("name", ["LanM", "WT", "EF1", "EF2", "EF3", "EF4"])
+@pytest.mark.parametrize("name", ["LanM"])
 def test_enrich_returns_none_for_dropped_names(name):
     """
     Verifies that every name in the drop list produces None from
@@ -538,4 +547,59 @@ def test_enrich_bare_r100k_chains_to_full_lanm_mutant():
     assert result["canonical_id"] == "Hans-LanM(R100K)"
     assert result["construct_type"] == "point_mutant"
     assert result["parent_scaffold"] == "Lanmodulin"
-        
+# ---------------------------------------------------------------------------
+# Names promoted out of the drop list after corpus inspection
+# ---------------------------------------------------------------------------
+
+@pytest.mark.parametrize("ef_motif", ["EF1", "EF2", "EF3", "EF4"])
+def test_classify_ef_hand_peptides_as_lanmodulin_chelators(ef_motif):
+    """
+    Verifies that the four isolated EF-hand peptides (Gutenthaler 2022
+    et al.) classify as engineered chelators derived from Lanmodulin.
+    These carry real micromolar Kd values and Gd relaxivity data and
+    must not be dropped along with motif-name agent confusion.
+    """
+    assert classify_construct(ef_motif) == (
+        "engineered_chelator",
+        "Lanmodulin",
+    )
+
+
+@pytest.mark.parametrize("ef_motif", ["EF1", "EF2", "EF3", "EF4"])
+def test_enrich_ef_hand_peptides_yields_chelator_metadata(ef_motif):
+    """
+    Verifies end-to-end enrichment for the EF-hand peptides: they pass
+    the drop step and get the chelator classification all the way out.
+    """
+    result = enrich_variant(ef_motif)
+
+    assert result == {
+        "canonical_id": ef_motif,
+        "construct_type": "engineered_chelator",
+        "parent_scaffold": "Lanmodulin",
+    }
+
+
+def test_enrich_bare_wt_resolves_to_mex_lanm_via_tier_1():
+    """
+    Verifies that the bare 'WT' name routes through the alias map to
+    'o-621' (Mex-LanM). Corpus inspection confirmed the only 'WT'
+    record carries Mex-LanM's canonical Ca2+ Kd (710 uM).
+    """
+    result = enrich_variant("WT")
+
+    assert result == {
+        "canonical_id": "o-621",
+        "construct_type": "ortholog",
+        "parent_scaffold": "Lanmodulin",
+    }
+
+
+@pytest.mark.parametrize("name", ["EF1", "EF2", "EF3", "EF4", "WT"])
+def test_should_drop_returns_false_for_promoted_names(name):
+    """
+    Verifies that names previously in the drop list — but promoted
+    after corpus inspection — are no longer flagged for drop.
+    """
+    assert should_drop(name) is False
+    

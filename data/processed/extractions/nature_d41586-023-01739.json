@@ -1,7 +1,7 @@
 {
   "variants": [
     {
-      "variant_id": "Mex-LanM",
+      "variant_id": "o-621",
       "source_organism": "Methylobacterium extorquens",
       "sequence": null,
       "parent_variant_id": null,
@@ -10,10 +10,13 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_d41586-023-01739"
     },
     {
-      "variant_id": "Hans-LanM",
+      "variant_id": "o-180",
       "source_organism": "Hansschlegelia quercus",
       "sequence": null,
       "parent_variant_id": null,
@@ -22,12 +25,15 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_d41586-023-01739"
     }
   ],
   "measurements": [
     {
-      "variant_id": "Mex-LanM",
+      "variant_id": "o-621",
       "target_element": "Neodymium",
       "measurement_type": "Kd_app",
       "value": 5e-12,
@@ -39,7 +45,7 @@
       "source_paper": "nature_d41586-023-01739"
     },
     {
-      "variant_id": "Hans-LanM",
+      "variant_id": "o-180",
       "target_element": "Lanthanum",
       "measurement_type": "Kd_app",
       "value": 7e-11,
@@ -51,7 +57,7 @@
       "source_paper": "nature_d41586-023-01739"
     },
     {
-      "variant_id": "Hans-LanM",
+      "variant_id": "o-180",
       "target_element": "Dysprosium",
       "measurement_type": "Kd_app",
       "value": 9e-11,

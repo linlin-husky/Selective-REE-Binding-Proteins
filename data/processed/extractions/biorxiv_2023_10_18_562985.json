@@ -10,6 +10,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "non_LanM_protein",
+      "notes": null,
       "source_paper": "biorxiv_2023_10_18_562985"
     }
   ],

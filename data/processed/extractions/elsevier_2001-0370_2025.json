@@ -1,7 +1,7 @@
 {
   "variants": [
     {
-      "variant_id": "WT-LanM",
+      "variant_id": "o-621",
       "source_organism": "Methylorubrum extorquens",
       "sequence": null,
       "parent_variant_id": null,
@@ -10,6 +10,9 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "elsevier_2001-0370_2025"
     },
     {
@@ -24,6 +27,9 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "point_mutant",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "elsevier_2001-0370_2025"
     },
     {
@@ -36,6 +42,9 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "point_mutant",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "elsevier_2001-0370_2025"
     },
     {
@@ -48,6 +57,9 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "point_mutant",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "elsevier_2001-0370_2025"
     },
     {
@@ -60,6 +72,9 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "point_mutant",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "elsevier_2001-0370_2025"
     },
     {
@@ -72,12 +87,15 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "point_mutant",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "elsevier_2001-0370_2025"
     }
   ],
   "measurements": [
     {
-      "variant_id": "WT-LanM",
+      "variant_id": "o-621",
       "target_element": "Lanthanum",
       "measurement_type": "Kd",
       "value": 5.3e-12,
@@ -89,7 +107,7 @@
       "source_paper": "elsevier_2001-0370_2025"
     },
     {
-      "variant_id": "WT-LanM",
+      "variant_id": "o-621",
       "target_element": "Neodymium",
       "measurement_type": "Kd",
       "value": 5.3e-12,
@@ -101,7 +119,7 @@
       "source_paper": "elsevier_2001-0370_2025"
     },
     {
-      "variant_id": "WT-LanM",
+      "variant_id": "o-621",
       "target_element": "Samarium",
       "measurement_type": "Kd",
       "value": 6.6e-12,
@@ -113,7 +131,7 @@
       "source_paper": "elsevier_2001-0370_2025"
     },
     {
-      "variant_id": "WT-LanM",
+      "variant_id": "o-621",
       "target_element": "Gadolinium",
       "measurement_type": "Kd",
       "value": 1e-11,
@@ -125,7 +143,7 @@
       "source_paper": "elsevier_2001-0370_2025"
     },
     {
-      "variant_id": "WT-LanM",
+      "variant_id": "o-621",
       "target_element": "Terbium",
       "measurement_type": "Kd",
       "value": 2.1e-11,
@@ -137,7 +155,7 @@
       "source_paper": "elsevier_2001-0370_2025"
     },
     {
-      "variant_id": "WT-LanM",
+      "variant_id": "o-621",
       "target_element": "Yttrium",
       "measurement_type": "Kd",
       "value": 1.7e-11,
@@ -149,7 +167,7 @@
       "source_paper": "elsevier_2001-0370_2025"
     },
     {
-      "variant_id": "WT-LanM",
+      "variant_id": "o-621",
       "target_element": "Calcium",
       "measurement_type": "Kd",
       "value": 0.00071,

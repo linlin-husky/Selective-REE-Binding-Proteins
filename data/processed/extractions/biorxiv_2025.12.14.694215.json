@@ -10,6 +10,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "engineered_chelator",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "biorxiv_2025.12.14.694215"
     },
     {
@@ -22,6 +25,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "engineered_chelator",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "biorxiv_2025.12.14.694215"
     },
     {
@@ -34,6 +40,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "engineered_chelator",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "biorxiv_2025.12.14.694215"
     },
     {
@@ -46,6 +55,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "engineered_chelator",
+      "parent_scaffold": "Calmodulin",
+      "notes": null,
       "source_paper": "biorxiv_2025.12.14.694215"
     }
   ],

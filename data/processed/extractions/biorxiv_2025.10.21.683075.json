@@ -10,6 +10,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "lanpepsy",
+      "notes": null,
       "source_paper": "biorxiv_2025.10.21.683075"
     }
   ],

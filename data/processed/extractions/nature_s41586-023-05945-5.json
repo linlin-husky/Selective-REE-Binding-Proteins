@@ -1,7 +1,7 @@
 {
   "variants": [
     {
-      "variant_id": "Hans-LanM",
+      "variant_id": "o-180",
       "source_organism": "Hansschlegelia quercus",
       "sequence": null,
       "parent_variant_id": null,
@@ -10,10 +10,13 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_s41586-023-05945-5"
     },
     {
-      "variant_id": "Mex-LanM",
+      "variant_id": "o-621",
       "source_organism": "Methylorubrum extorquens",
       "sequence": null,
       "parent_variant_id": null,
@@ -22,6 +25,9 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_s41586-023-05945-5"
     },
     {
@@ -36,12 +42,15 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "point_mutant",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_s41586-023-05945-5"
     }
   ],
   "measurements": [
     {
-      "variant_id": "Hans-LanM",
+      "variant_id": "o-180",
       "target_element": "Lanthanum",
       "measurement_type": "Kd_app",
       "value": 68.0,
@@ -53,7 +62,7 @@
       "source_paper": "nature_s41586-023-05945-5"
     },
     {
-      "variant_id": "Hans-LanM",
+      "variant_id": "o-180",
       "target_element": "Neodymium",
       "measurement_type": "Kd_app",
       "value": 91.0,
@@ -65,7 +74,7 @@
       "source_paper": "nature_s41586-023-05945-5"
     },
     {
-      "variant_id": "Hans-LanM",
+      "variant_id": "o-180",
       "target_element": "Dysprosium",
       "measurement_type": "Kd_app",
       "value": 0.3,
@@ -77,7 +86,7 @@
       "source_paper": "nature_s41586-023-05945-5"
     },
     {
-      "variant_id": "Hans-LanM",
+      "variant_id": "o-180",
       "target_element": "Calcium",
       "measurement_type": "Kd_app",
       "value": 60.0,
@@ -89,7 +98,7 @@
       "source_paper": "nature_s41586-023-05945-5"
     },
     {
-      "variant_id": "Hans-LanM",
+      "variant_id": "o-180",
       "target_element": "Dysprosium",
       "measurement_type": "Kdimer",
       "value": 60.0,
@@ -101,7 +110,7 @@
       "source_paper": "nature_s41586-023-05945-5"
     },
     {
-      "variant_id": "Hans-LanM",
+      "variant_id": "o-180",
       "target_element": "Dysprosium",
       "measurement_type": "Kdimer",
       "value": 117.0,

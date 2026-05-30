@@ -10,22 +10,13 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_2026_02176"
     },
     {
-      "variant_id": "Mex-LanM",
-      "source_organism": "Methylobacterium extorquens",
-      "sequence": null,
-      "parent_variant_id": null,
-      "mutations": [],
-      "mutation_notation": null,
-      "taxonomy": null,
-      "ef_hand_count": null,
-      "selectivity_cluster": null,
-      "source_paper": "nature_2026_02176"
-    },
-    {
-      "variant_id": "Hans-LanM",
+      "variant_id": "o-180",
       "source_organism": "Hansschlegelia quercus",
       "sequence": null,
       "parent_variant_id": null,
@@ -34,6 +25,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_2026_02176"
     },
     {
@@ -48,6 +42,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "point_mutant",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_2026_02176"
     },
     {
@@ -60,6 +57,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": 1,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_2026_02176"
     },
     {
@@ -72,6 +72,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_2026_02176"
     },
     {
@@ -84,6 +87,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_2026_02176"
     },
     {
@@ -96,6 +102,9 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": 5,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_2026_02176"
     },
     {
@@ -108,12 +117,15 @@
       "taxonomy": null,
       "ef_hand_count": null,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nature_2026_02176"
     }
   ],
   "measurements": [
     {
-      "variant_id": "Mex-LanM",
+      "variant_id": "o-621",
       "target_element": "Neodymium",
       "measurement_type": "Kd_app",
       "value": 27.0,

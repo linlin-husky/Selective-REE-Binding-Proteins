@@ -10,10 +10,13 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "point_mutant",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nihms-1790336"
     },
     {
-      "variant_id": "WT",
+      "variant_id": "o-621",
       "source_organism": "Methylobacterium extorquens",
       "sequence": null,
       "parent_variant_id": null,
@@ -22,12 +25,15 @@
       "taxonomy": null,
       "ef_hand_count": 4,
       "selectivity_cluster": null,
+      "construct_type": "ortholog",
+      "parent_scaffold": "Lanmodulin",
+      "notes": null,
       "source_paper": "nihms-1790336"
     }
   ],
   "measurements": [
     {
-      "variant_id": "WT",
+      "variant_id": "o-621",
       "target_element": "Calcium",
       "measurement_type": "Kd_app",
       "value": 710.0,
